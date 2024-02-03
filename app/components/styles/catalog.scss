@@ -1,0 +1,58 @@
+.all--books {
+    & > .books {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 3.4rem;
+    }
+    .more {
+        text-align: center;
+        margin-top: 2rem;
+        & > button {
+            padding: 1rem 2rem;
+            border: 2px solid #3d3c3c;
+            border-radius: 20px;
+            font-weight: 700;
+            background-color: #fdbf0f;
+            color: #3d3c3c;
+            transition: all 0.5s;
+            cursor: pointer;
+            &:hover {
+                background-color: #f9784b;
+                color: white;
+            }
+        }
+    }
+    .search--books {
+        margin-bottom: 4rem;
+        .search--input {
+            width: 530px;
+            margin: 0 auto;
+            position: relative;
+            margin-bottom: 4rem;
+            &:before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                transform: translate(10px, 12px);
+                background-color: #fdbf0f;
+                border-radius: 50px;
+                z-index: -1;
+            }
+            input {
+                width: 100%;
+                height: 42px;
+                border: 2px solid #3d3c3c;
+                border-radius: 50px;
+                padding-inline: 2rem;
+                background-color: #ffffff;
+            }
+        }
+        .filter {
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+}

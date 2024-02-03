@@ -1,0 +1,58 @@
+@import 'authenticate';
+.cart--container {
+    // display: none;
+    width: 0px;
+    height: 100%;
+    position: fixed;
+    right: 0;
+    top: 0;
+    // transition: all 1s;
+    transform-origin: 50%;
+    border-radius: 500%;
+    overflow-y: scroll;
+    &.show {
+        border-radius: 0px;
+        display: block;
+        width: 500px;
+        height: 100%;
+        background-color: white;
+        z-index: 10;
+        padding: 50px 30px;
+
+        &::before {
+            content: '';
+            width: calc(100% - 500px);
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: -10;
+        }
+    }
+    .heading {
+        .title {
+            font-size: 32px;
+            color: #f9784b;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .close {
+            position: absolute;
+            top: 20px;
+            display: inline-block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border: 2px solid #f9784b;
+            border-radius: 50px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+    }
+    .logout--btn {
+        @include btn();
+    }
+}

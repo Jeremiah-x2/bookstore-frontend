@@ -1,0 +1,54 @@
+.order--item {
+    padding: 1.5rem;
+    border: 2px dashed #3d3c3c;
+    border-radius: 20px;
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 1rem;
+    & > img {
+        border-radius: 10px;
+        box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.4);
+    }
+    .desc {
+        // border: 1px solid red;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin-right: auto;
+        .cart--add {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            .reduce,
+            .add {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 18px;
+                height: 18px;
+                border: 2px solid #3d3c3c;
+                border-radius: 50px;
+                font-weight: bold;
+            }
+            .count {
+                padding: 0.5rem 1.2rem;
+                border: 2px solid #3d3c3c;
+                border-radius: 12px;
+            }
+        }
+    }
+    .p--delete {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        p {
+            font-size: 24px;
+            color: #f9784b;
+        }
+        button {
+            border: none;
+            background-color: transparent;
+        }
+    }
+}

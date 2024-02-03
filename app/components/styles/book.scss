@@ -1,0 +1,35 @@
+.books {
+    width: 200px;
+    overflow: hidden;
+    & > img {
+        margin-bottom: 28px;
+        box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.4);
+    }
+    .buy {
+        & > div:first-child {
+            display: flex;
+            gap: 1rem;
+            .price {
+                padding: 14px 32px;
+                border: 2px solid #3d3c3c;
+                border-radius: 20px;
+            }
+            .favorite--btn {
+                border-radius: 20px;
+                border: 2px solid #3d3c3c;
+                padding: 12px 22px;
+                background-color: transparent;
+                cursor: pointer;
+            }
+        }
+        .buy--btn {
+            margin-top: 10px;
+            padding-block: 10px;
+            width: 100%;
+            background-color: #fdbf0f;
+            border: 2px solid #3d3c3c;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+    }
+}

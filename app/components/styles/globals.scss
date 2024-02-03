@@ -1,0 +1,28 @@
+*,
+::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+@mixin flex($jc, $ai, $gap) {
+    display: flex;
+    justify-content: $jc;
+    align-items: $ai;
+    gap: $gap;
+}
+
+body {
+    padding: 60px 70px;
+}
+
+header {
+    @include flex(space-between, center, auto);
+    margin-bottom: 4.375rem;
+    .logo {
+        @include flex(space-between, center, 0.5rem);
+    }
+    .cart {
+        @include flex(space-between, center, 0.5rem);
+    }
+}
