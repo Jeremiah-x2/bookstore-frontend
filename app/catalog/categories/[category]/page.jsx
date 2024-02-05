@@ -2,7 +2,9 @@ import Book from '@/app/components/Book';
 import React from 'react';
 
 async function getBooksByCategory() {
-    const res = await fetch('http://localhost:5000/books');
+    const res = await fetch('http://localhost:5000/books', {
+        credentials: 'include',
+    });
     return res.json();
 }
 
@@ -16,7 +18,10 @@ export default async function Category({ params }) {
         <div>
             {data.length}
             {data.map((item, index) => (
-                <Book book={item} />
+                <Book
+                    book={item}
+                    key={index}
+                />
             ))}
         </div>
     );

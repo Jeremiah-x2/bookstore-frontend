@@ -6,38 +6,38 @@ import OrderItem from './Order';
 import { syne } from '../layout';
 
 export default function Cart({ showCart, setShowCart, fetchTrigger }) {
-    const [isAuthenticate, setIsAuthenticate] = useState(null);
+    const [isAuthenticate, setIsAuthenticate] = useState(false);
     const [orders, setOrders] = useState(null);
     useEffect(() => {
-        const userToken = window.localStorage.getItem('userToken');
-        // console.log(userToken);
         async function getOrders() {
             const request = await fetch('http://localhost:5000/orders', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${userToken}`,
                 },
+                credentials: 'include',
             });
             const response = await request.json();
+            if (request.status === 200) {
+                setIsAuthenticate(true);
+            }
+            if (request.status === 403) {
+                setIsAuthenticate(false);
+            }
 
             console.log('request status', request.status);
             console.log('Request response', response);
+
             setOrders(response);
         }
-        if (userToken) {
-            setIsAuthenticate(true);
-            getOrders();
-        } else {
-            // console.log('Not Authenticated');
-        }
-        // console.log(userToken);
+        getOrders();
     }, [fetchTrigger]);
     return (
         <section
             className={`cart--container ${showCart ? 'show' : ''} ${
                 syne.className
             }`}>
+            {/* {JSON.stringify(orders)} */}
             <div className="heading">
                 <span
                     className="close"
@@ -58,13 +58,14 @@ export default function Cart({ showCart, setShowCart, fetchTrigger }) {
                 ) : (
                     <>
                         <div className="orders">
-                            {orders &&
-                                orders.orders.map((item, index) => (
-                                    <OrderItem
-                                        item={item}
-                                        key={index}
-                                    />
-                                ))}
+                            {isAuthenticate && orders
+                                ? orders.orders.map((item, index) => (
+                                      <OrderItem
+                                          item={item}
+                                          key={index}
+                                      />
+                                  ))
+                                : ''}
                         </div>
                         <button className="logout--btn">Logout</button>
                     </>

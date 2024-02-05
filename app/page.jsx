@@ -14,9 +14,10 @@ import { sign, decode, verify } from 'jsonwebtoken';
 const syne = Syne({ subsets: ['latin'], weight: ['500', '400', '600'] });
 const unica = Unica_One({ subsets: ['latin'], weight: '400' });
 
-async function getBooks(url, headers) {
-    const response = await fetch(url, {
-        headers,
+async function getBooks() {
+    const response = await fetch('http://localhost:5000/books', {
+        next: { revalidate: 0 },
+        credentials: 'include',
     });
     const data = await response.json();
 
@@ -26,25 +27,18 @@ async function getBooks(url, headers) {
 export default function Home() {
     const [data, setData] = useState();
 
+    // console.log(data.result.slice(0, 3));
     // const [user, setUser] = useState(false);
     // const [token, setToken] = useState(null);
-
     useEffect(() => {
         async function parseData() {
             const token = window.localStorage.getItem('userToken');
-            let url;
-            if (token) {
-                url = 'http://localhost:5000/books/auth';
-            } else {
-                url = 'http://localhost:5000/books';
-            }
-            const res = await getBooks(url, {
-                Authorization: `Bearer ${token}`,
-            });
+            const res = await getBooks();
             await setData(res);
             console.log(res.result.slice(0, 1));
         }
 
+        console.log('Cookie', document.cookie);
         // if (token) {
         //     try {
         //         const decodedToken = decode(token, 'hello');

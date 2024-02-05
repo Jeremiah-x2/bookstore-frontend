@@ -17,10 +17,11 @@ export default function CartButton({ bookId }) {
                     'userToken'
                 )}`,
             },
+            credentials: 'include',
             body: JSON.stringify({ book: bookId }),
         });
         const response = await request.json();
-        // router.refresh();
+        router.refresh();
         router.push(`/catalog/${bookId}`);
         if (request.status === 201) {
             // toast('order created successfully');

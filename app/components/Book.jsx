@@ -3,16 +3,12 @@ import './styles/book.scss';
 import Image from 'next/image';
 import Link from 'next/link';
 import CartButton from './CartButton';
-// import { useEffect, useState } from 'react';
 import UpdateCartButton from './UpdateCartButton';
 
-export default function Book({ book, token }) {
-    // console.log('Token', book._id, token);
-    // const check = book.orders.some((obj) => obj.user === token);
-
+export default function Book({ book }) {
+    // console.log(book);
     return (
         <div className="books">
-            {/* {check ? <p>yes</p> : ''} */}
             <Link href={`/catalog/${book._id}`}>
                 <Image
                     src={book.image}
@@ -34,8 +30,8 @@ export default function Book({ book, token }) {
                         />
                     </button>
                 </div>
-                {book.orders.length > 0 ? (
-                    <UpdateCartButton quantity={book.orders[0].quantity} />
+                {book.orders && book.orders.quantity > 0 ? (
+                    <UpdateCartButton orders={book.orders} />
                 ) : (
                     <CartButton bookId={book._id} />
                 )}

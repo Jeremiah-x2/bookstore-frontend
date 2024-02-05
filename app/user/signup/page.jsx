@@ -34,7 +34,7 @@ export default function Signup() {
             });
             const response = await request.json();
             console.log(response);
-            console.log(response.result.token);
+            // console.log(response.result.token);
             if (request.status === 409) {
                 toast('Email already exists');
             }
