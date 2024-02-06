@@ -26,3 +26,7 @@ header {
         @include flex(space-between, center, 0.5rem);
     }
 }
+
+button {
+    cursor: pointer;
+}

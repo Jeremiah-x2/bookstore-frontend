@@ -6,7 +6,7 @@ import { Syne, Unica_One } from 'next/font/google';
 import Book from './components/Book';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/react-splide/css';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import TrendingBook from './components/TrendingBook';
 import Link from 'next/link';
 import { sign, decode, verify } from 'jsonwebtoken';
@@ -26,10 +26,6 @@ async function getBooks() {
 
 export default function Home() {
     const [data, setData] = useState();
-
-    // console.log(data.result.slice(0, 3));
-    // const [user, setUser] = useState(false);
-    // const [token, setToken] = useState(null);
     useEffect(() => {
         async function parseData() {
             const token = window.localStorage.getItem('userToken');
@@ -39,15 +35,6 @@ export default function Home() {
         }
 
         console.log('Cookie', document.cookie);
-        // if (token) {
-        //     try {
-        //         const decodedToken = decode(token, 'hello');
-        //         console.log(decodedToken.id);
-        //         setToken(decodedToken.id);
-        //     } catch (error) {
-        //         console.log('Error', error);
-        //     }
-        // }
 
         parseData();
     }, []);
@@ -126,7 +113,11 @@ export default function Home() {
             <section className={`romance ${unica.className}`}>
                 <h4>Romance</h4>
                 <Splide
-                    options={{ pagination: false, perPage: 5, wheel: true }}>
+                    options={{
+                        pagination: false,
+                        perPage: 5,
+                        wheel: true,
+                    }}>
                     {data &&
                         data.result.slice(0, 10).map((item, index) => (
                             <SplideSlide key={index}>
@@ -151,6 +142,7 @@ export default function Home() {
                         ))}
                 </Splide>
             </section>
+            {/* {data && JSON.stringify(data.result.slice(0, 2))} */}
         </main>
     );
 }

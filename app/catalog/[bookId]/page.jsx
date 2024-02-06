@@ -1,9 +1,11 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import '@/app/components/styles/bookById.scss';
 import { Syne, Unica_One } from 'next/font/google';
 import CartButton from '@/app/components/CartButton';
+import UpdateCartButton from '@/app/components/UpdateCartButton';
 
 const unica = Unica_One({ subsets: ['latin'], weight: '400' });
 const syne = Syne({ subsets: ['latin'], weight: ['400', '500', '600'] });
@@ -35,16 +37,16 @@ export default function BookDetails({ params }) {
                     {JSON.stringify(book)}
                     <div className="product--details">
                         <Image
-                            src={book.item.image}
+                            src={book.image}
                             width={280}
                             height={418}
                             alt="Book Image"
                         />
                         <div className="book--details">
                             <div className={`title ${unica.className}`}>
-                                <h5>{book.item.title}</h5>
+                                <h5>{book.title}</h5>
                             </div>
-                            <p className="author">Author: {book.item.author}</p>
+                            <p className="author">Author: {book.author}</p>
                             <p className="about--book">
                                 Lorem ipsum dolor sit amet consectetur
                                 adipisicing elit. Aspernatur, neque molestiae
@@ -54,30 +56,29 @@ export default function BookDetails({ params }) {
                             </p>
                             <div className={`purchase ${syne.className}`}>
                                 <div>
-                                    <span className="price">
-                                        ${book.item.price}
-                                    </span>
-                                    <div
-                                        className={`order--count ${unica.className}`}>
-                                        <span className="reduce">-</span>
-                                        <span className="count">
-                                            {book.order.quantity}
-                                        </span>
-                                        <span className="add">+</span>
-                                    </div>
+                                    <span className="price">${book.price}</span>
+                                    {book.orders && (
+                                        <></>
+                                        // <div
+                                        //     className={`order--count ${unica.className}`}>
+                                        //     <span className="reduce">-</span>
+                                        //     <span className="count">
+                                        //         {book.orders.quantity}
+                                        //     </span>
+                                        //     <span className="add">+</span>
+                                        // </div>
+                                        // <UpdateCartButton />
+                                    )}
                                 </div>
                                 <div className={`cart--buy`}>
-                                    {/* <button className="cart">
-                                        <Image
-                                            src={'/images/SHOPPING_CART.svg'}
-                                            width={20}
-                                            height={20}
-                                            alt="Shopping Cart"
-                                        />
-                                    </button> */}
-                                    <CartButton bookId={book.item._id} />
+                                    {book.orders && (
+                                        <>
+                                            {/* {JSON.stringify(book)} */}
+                                            <CartButton book={book} />
+                                        </>
+                                    )}
                                     <button className={`buy ${syne.className}`}>
-                                        Buy Now
+                                        <Link href={'/checkout'}>Buy Now</Link>
                                     </button>
                                 </div>
                             </div>

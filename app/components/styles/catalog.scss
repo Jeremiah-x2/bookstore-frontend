@@ -1,27 +1,16 @@
+@mixin grid_books_catalog() {
+    display: grid;
+    grid-template-columns: repeat(5, auto);
+    column-gap: 2rem;
+    row-gap: 2rem;
+}
+
 .all--books {
-    & > .books {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 3.4rem;
+    .books {
+        // background-color: gray;
+        @include grid_books_catalog();
     }
-    .more {
-        text-align: center;
-        margin-top: 2rem;
-        & > button {
-            padding: 1rem 2rem;
-            border: 2px solid #3d3c3c;
-            border-radius: 20px;
-            font-weight: 700;
-            background-color: #fdbf0f;
-            color: #3d3c3c;
-            transition: all 0.5s;
-            cursor: pointer;
-            &:hover {
-                background-color: #f9784b;
-                color: white;
-            }
-        }
-    }
+
     .search--books {
         margin-bottom: 4rem;
         .search--input {
@@ -50,9 +39,29 @@
                 background-color: #ffffff;
             }
         }
-        .filter {
-            display: flex;
-            justify-content: space-between;
+    }
+
+    .filter {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .more {
+        text-align: center;
+        margin-top: 2rem;
+        & > button {
+            padding: 1rem 2rem;
+            border: 2px solid #3d3c3c;
+            border-radius: 20px;
+            font-weight: 700;
+            background-color: #fdbf0f;
+            color: #3d3c3c;
+            transition: all 0.5s;
+            cursor: pointer;
+            &:hover {
+                background-color: #f9784b;
+                color: white;
+            }
         }
     }
 }

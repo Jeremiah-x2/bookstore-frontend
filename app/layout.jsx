@@ -4,6 +4,7 @@ import './components/styles/globals.scss';
 import Header from './components/Header';
 import Cart from './components/Cart';
 import { useEffect, useState, createContext, useContext } from 'react';
+import Footer from './components/Footer';
 
 const inter = Inter({ subsets: ['latin'] });
 export const unica = Unica_One({ subsets: ['latin'], weight: ['400'] });
@@ -41,8 +42,10 @@ export default function RootLayout({ children }) {
                     showCart={showCart}
                     setShowCart={setShowCart}
                     fetchTrigger={fetchTrigger}
+                    setFetchTrigger={setFetchTrigger}
                 />
                 {children}
+                <Footer />
             </body>
         </html>
     );

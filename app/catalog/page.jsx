@@ -1,5 +1,6 @@
 'use client';
 
+// import '../components/styles/catalog.scss';
 import '../components/styles/catalog.scss';
 import { Suspense, useEffect, useState } from 'react';
 import Book from '../components/Book';
@@ -10,7 +11,9 @@ import Image from 'next/image';
 
 const syne = Syne({ subsets: ['latin'], weight: ['400', '500', '700'] });
 async function getAllBooks() {
-    const res = await fetch('http://localhost:5000/books');
+    const res = await fetch('http://localhost:5000/books', {
+        credentials: 'include',
+    });
 
     return res.json();
 }
@@ -87,6 +90,7 @@ export default function page() {
                                   key={index}
                               />
                           ))}
+                {/* {data && JSON.stringify(data.result.slice(0, 2))} */}
             </div>
             <div className="more">
                 <button

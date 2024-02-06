@@ -55,4 +55,41 @@
     .logout--btn {
         @include btn();
     }
+    .total {
+        margin-top: 4rem;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        padding: 34px 30px;
+        border-top-left-radius: 20px;
+        border: 2px solid #3d3c3c;
+        position: absolute;
+        width: 100%;
+        left: 0;
+        .price {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            span {
+                font-size: 24px;
+                &.total--price {
+                    padding: 12px 32px;
+                    background-color: #fdbf0f;
+                    border: 2px solid #3d3c3c;
+                    border-radius: 20px;
+                }
+            }
+        }
+        .pay {
+            button {
+                background-color: #f9784b;
+                width: 100%;
+                padding-block: 12px;
+                border: 2px solid #3d3c3c;
+                border-radius: 20px;
+                font-size: 24px;
+                color: #3d3c3c;
+            }
+        }
+    }
 }

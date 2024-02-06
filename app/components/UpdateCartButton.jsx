@@ -1,8 +1,15 @@
 'use client';
+import './styles/updatebtn.scss';
 import React, { useState } from 'react';
+import { deleteOrder } from './Order';
 
-export default function UpdateCartButton({ orders }) {
-    const [count, setCount] = useState(orders.quantity);
+export default function UpdateCartButton({
+    book,
+    orders,
+    orderQuantity,
+    setOrderQuantity,
+}) {
+    // const [count, setCount] = useState(orderQuantity);
     async function updateQuantity(id, incrementBy) {
         const req = await fetch(`http://localhost:5000/orders/${id}`, {
             method: 'PATCH',
@@ -14,10 +21,7 @@ export default function UpdateCartButton({ orders }) {
         });
         const res = await req.json();
         if (req.ok) {
-            setCount((prev) => {
-                if (incrementBy === -1 && prev === 0) {
-                    return;
-                }
+            setOrderQuantity((prev) => {
                 return prev + incrementBy;
             });
         }
@@ -25,15 +29,26 @@ export default function UpdateCartButton({ orders }) {
 
     return (
         <div className="update--cart">
-            <button
-                className="increase"
-                onClick={() => updateQuantity(orders._id, -1)}>
-                -
-            </button>
-            <span className="count">{count}</span>
+            {orderQuantity === 1 ? (
+                <button
+                    className="increase"
+                    onClick={() => {
+                        deleteOrder(book._id);
+                        setOrderQuantity(0);
+                    }}>
+                    -
+                </button>
+            ) : (
+                <button
+                    className="increase"
+                    onClick={() => updateQuantity(book._id, -1)}>
+                    -
+                </button>
+            )}
+            <span className="count">{orderQuantity}</span>
             <button
                 className="add"
-                onClick={() => updateQuantity(orders._id, 1)}>
+                onClick={() => updateQuantity(book._id, 1)}>
                 +
             </button>
         </div>

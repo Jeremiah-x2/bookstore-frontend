@@ -1,0 +1,18 @@
+.update--cart {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    justify-content: space-between;
+    button {
+        font-size: 2rem;
+        padding: 0.5rem 2rem;
+        border: 2px solid #3d3c3c;
+        border-radius: 12px;
+    }
+    .count {
+        border: 2px solid #fdbf0f;
+        padding: 0.5rem 1rem;
+        font-size: 1.6rem;
+        border-radius: 8px;
+    }
+}

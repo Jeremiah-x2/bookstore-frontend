@@ -5,7 +5,12 @@ import Link from 'next/link';
 import OrderItem from './Order';
 import { syne } from '../layout';
 
-export default function Cart({ showCart, setShowCart, fetchTrigger }) {
+export default function Cart({
+    showCart,
+    setShowCart,
+    fetchTrigger,
+    setFetchTrigger,
+}) {
     const [isAuthenticate, setIsAuthenticate] = useState(false);
     const [orders, setOrders] = useState(null);
     useEffect(() => {
@@ -57,7 +62,8 @@ export default function Cart({ showCart, setShowCart, fetchTrigger }) {
                     </div>
                 ) : (
                     <>
-                        <div className="orders">
+                        <button className="logout--btn">Logout</button>
+                        {/* <div className="orders">
                             {isAuthenticate && orders
                                 ? orders.orders.map((item, index) => (
                                       <OrderItem
@@ -66,8 +72,47 @@ export default function Cart({ showCart, setShowCart, fetchTrigger }) {
                                       />
                                   ))
                                 : ''}
-                        </div>
-                        <button className="logout--btn">Logout</button>
+                        </div> */}
+                        {isAuthenticate && orders && (
+                            <>
+                                <div className="orders">
+                                    {orders.orders.map((item, index) => (
+                                        <OrderItem
+                                            item={item}
+                                            key={index}
+                                            setFetchTrigger={setFetchTrigger}
+                                        />
+                                    ))}
+                                </div>
+                                {/* {JSON.stringify(orders.orders)} */}
+                                {orders.orders.length !== 0 ? (
+                                    <div className="total">
+                                        <div className="price">
+                                            <span>Subtotal:</span>
+                                            <span className="total--price">
+                                                $
+                                                {orders.orders
+                                                    .reduce(
+                                                        (x, y) =>
+                                                            x +
+                                                            y.book.price *
+                                                                y.quantity,
+                                                        0
+                                                    )
+                                                    .toFixed(2)}
+                                            </span>
+                                        </div>
+                                        <div className="pay">
+                                            <Link href={'/checkout'}>
+                                                <button>Checkout</button>
+                                            </Link>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div>You cart is Empty</div>
+                                )}
+                            </>
+                        )}
                     </>
                 )}
             </div>

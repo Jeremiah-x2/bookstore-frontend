@@ -10,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function Signup() {
     const router = useRouter();
     const [formData, setFormData] = useState({
+        name: '',
         email: '',
         password: '',
         confirmPassword: '',
@@ -33,14 +34,8 @@ export default function Signup() {
                 body: JSON.stringify(formData),
             });
             const response = await request.json();
-            console.log(response);
-            // console.log(response.result.token);
             if (request.status === 409) {
                 toast('Email already exists');
-            }
-            if (request.status === 201) {
-                window.localStorage.setItem('userToken', response.result.token);
-                // router.push('/');
             }
             return;
         } else {
@@ -52,6 +47,15 @@ export default function Signup() {
     return (
         <div className={`form ${syne.className}`}>
             <form onSubmit={createUser}>
+                <label htmlFor="name">Name:</label>
+                <input
+                    type="text"
+                    name="name"
+                    id="name"
+                    value={formData.name}
+                    placeholder="Enter your name"
+                    onChange={setValue}
+                />
                 <label htmlFor="email">Email:</label>
                 <input
                     type="email"
@@ -79,7 +83,6 @@ export default function Signup() {
                     onChange={setValue}
                     placeholder="Confirm Password"
                 />
-
                 <button className="create--acct--btn btn">Signup</button>
             </form>
             <p>

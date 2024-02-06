@@ -8,7 +8,8 @@ import UpdateCartButton from './UpdateCartButton';
 export default function Book({ book }) {
     // console.log(book);
     return (
-        <div className="books">
+        <div className="books--item">
+            {/* {JSON.stringify(book)} */}
             <Link href={`/catalog/${book._id}`}>
                 <Image
                     src={book.image}
@@ -18,7 +19,6 @@ export default function Book({ book }) {
                 />
             </Link>
             <div className="buy">
-                <p>{book.book_id}</p>
                 <div>
                     <span className="price">${book.price}</span>
                     <button className="favorite--btn">
@@ -30,11 +30,7 @@ export default function Book({ book }) {
                         />
                     </button>
                 </div>
-                {book.orders && book.orders.quantity > 0 ? (
-                    <UpdateCartButton orders={book.orders} />
-                ) : (
-                    <CartButton bookId={book._id} />
-                )}
+                <CartButton book={book} />
             </div>
         </div>
     );
