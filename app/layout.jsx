@@ -1,4 +1,5 @@
 'use client';
+import React from 'react';
 import { Inter, Unica_One, Syne } from 'next/font/google';
 import './components/styles/globals.scss';
 import Header from './components/Header';
@@ -29,7 +30,7 @@ export default function RootLayout({ children }) {
         if (token) {
             setAuthenticate(true);
         }
-    });
+    }, []);
 
     return (
         <html lang="en">
@@ -44,7 +45,7 @@ export default function RootLayout({ children }) {
                     fetchTrigger={fetchTrigger}
                     setFetchTrigger={setFetchTrigger}
                 />
-                {children}
+                {React.cloneElement(children, { showCart })}
                 <Footer />
             </body>
         </html>

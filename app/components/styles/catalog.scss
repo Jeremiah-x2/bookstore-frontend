@@ -3,11 +3,14 @@
     grid-template-columns: repeat(5, auto);
     column-gap: 2rem;
     row-gap: 2rem;
+
+    @media screen and (max-width: 600px) {
+        grid-template-columns: 100%;
+    }
 }
 
 .all--books {
     .books {
-        // background-color: gray;
         @include grid_books_catalog();
     }
 
@@ -29,6 +32,9 @@
                 background-color: #fdbf0f;
                 border-radius: 50px;
                 z-index: -1;
+                @media screen and (max-width: 600px) {
+                    transform: translate(2px, 5px);
+                }
             }
             input {
                 width: 100%;
@@ -38,12 +44,53 @@
                 padding-inline: 2rem;
                 background-color: #ffffff;
             }
+            .search--result {
+                position: absolute;
+                margin-top: 20px;
+                width: 100%;
+                border: 2px solid #3d3c3c;
+                border-radius: 20px;
+                z-index: 10;
+                background-color: white;
+                padding: 2rem;
+                height: 200px;
+                overflow-y: scroll;
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+                &::-webkit-scrollbar {
+                    display: none;
+                }
+                & > a > div {
+                    padding-block: 1rem;
+                    background-color: #fdbf0f;
+                    display: flex;
+                    gap: 2rem;
+                    border-width: 2px 0;
+                    border-style: solid;
+                    border-color: #3d3c3c;
+                    & > div {
+                        display: flex;
+                        flex-direction: column;
+                        // gap: 2rem;
+                        justify-content: space-evenly;
+                    }
+                }
+            }
         }
     }
 
     .filter {
         display: flex;
         justify-content: space-between;
+    }
+    .nothing {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
+        // border: 2px solid red;
+        padding: 4rem;
     }
 
     .more {
@@ -61,6 +108,19 @@
             &:hover {
                 background-color: #f9784b;
                 color: white;
+            }
+        }
+    }
+
+    @media screen and (max-width: 600px) {
+        .search--books {
+            width: 100%;
+            .search--input {
+                width: 100%;
+            }
+            .filter {
+                flex-direction: column;
+                gap: 2rem;
             }
         }
     }

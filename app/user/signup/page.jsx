@@ -25,22 +25,36 @@ export default function Signup() {
 
     async function createUser(e) {
         e.preventDefault();
-        if (formData.password === formData.confirmPassword) {
-            const request = await fetch('http://localhost:5000/users', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
-            });
+        document
+            .getElementById('password')
+            .parentNode.classList.remove('match--error');
+        if (
+            formData.password.length >= 6 &&
+            formData.password === formData.confirmPassword
+        ) {
+            const request = await fetch(
+                `${process.env.NEXT_PUBLIC_API_URL}/users`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData),
+                }
+            );
             const response = await request.json();
             if (request.status === 409) {
                 toast('Email already exists');
             }
             return;
-        } else {
+        } else if (formData.password !== formData.confirmPassword) {
             console.log('passwords do not match', formData);
+            document
+                .getElementById('password')
+                .parentNode.classList.add('match--error');
             toast('Passwords do not match');
+        } else if (formData.password.length < 6) {
+            toast('Minimum password length of 6 characters');
         }
     }
 
@@ -48,6 +62,7 @@ export default function Signup() {
         <div className={`form ${syne.className}`}>
             <form onSubmit={createUser}>
                 <label htmlFor="name">Name:</label>
+
                 <input
                     type="text"
                     name="name"
@@ -55,6 +70,7 @@ export default function Signup() {
                     value={formData.name}
                     placeholder="Enter your name"
                     onChange={setValue}
+                    required={true}
                 />
                 <label htmlFor="email">Email:</label>
                 <input
@@ -64,16 +80,20 @@ export default function Signup() {
                     value={formData.email}
                     onChange={setValue}
                     placeholder="Email"
+                    required={true}
                 />
                 <label htmlFor="password">Password:</label>
-                <input
-                    type="password"
-                    name="password"
-                    id="password"
-                    value={formData.password}
-                    onChange={setValue}
-                    placeholder="Create a password"
-                />
+                <div>
+                    <input
+                        type="password"
+                        name="password"
+                        id="password"
+                        value={formData.password}
+                        onChange={setValue}
+                        placeholder="Create a password"
+                        required={true}
+                    />
+                </div>
                 <label htmlFor="confirmPassword">Confirm Password:</label>
                 <input
                     type="password"
@@ -82,6 +102,7 @@ export default function Signup() {
                     value={formData.confirmPassword}
                     onChange={setValue}
                     placeholder="Confirm Password"
+                    required={true}
                 />
                 <button className="create--acct--btn btn">Signup</button>
             </form>

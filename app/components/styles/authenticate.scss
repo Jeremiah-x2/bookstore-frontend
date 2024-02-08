@@ -19,6 +19,16 @@
     width: 600px;
     margin: 0 auto;
     form {
+        .match--error {
+            position: relative;
+            &::before {
+                content: 'Passwords do not match';
+                position: absolute;
+                bottom: 10px;
+                width: 100%;
+                color: red;
+            }
+        }
         input {
             width: 100%;
             margin-block: 0.5rem 2rem;

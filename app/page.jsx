@@ -15,7 +15,7 @@ const syne = Syne({ subsets: ['latin'], weight: ['500', '400', '600'] });
 const unica = Unica_One({ subsets: ['latin'], weight: '400' });
 
 async function getBooks() {
-    const response = await fetch('http://localhost:5000/books', {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/books`, {
         next: { revalidate: 0 },
         credentials: 'include',
     });
@@ -25,7 +25,8 @@ async function getBooks() {
 }
 
 export default function Home() {
-    const [data, setData] = useState();
+    const [data, setData] = useState(null);
+    const [search, setSearch] = useState('');
     useEffect(() => {
         async function parseData() {
             const token = window.localStorage.getItem('userToken');
@@ -50,7 +51,39 @@ export default function Home() {
                         <input
                             type="text"
                             placeholder="Type the name of book or author..."
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
                         />
+                        {search !== '' && (
+                            <div className="search--result">
+                                {data &&
+                                    data.result
+                                        .filter(
+                                            (item) =>
+                                                item.title.startsWith(search) ||
+                                                item.author.startsWith(search)
+                                        )
+                                        .map((item, index) => (
+                                            <Link
+                                                href={`/catalog/${item._id}`}
+                                                key={index}>
+                                                <div>
+                                                    <Image
+                                                        src={item.image}
+                                                        width={50}
+                                                        height={100}
+                                                        alt="Image"
+                                                    />
+                                                    <div>
+                                                        <p>{item.title}</p>
+                                                        <p>{item.author}</p>
+                                                        <p>{item.price}</p>
+                                                    </div>
+                                                </div>
+                                            </Link>
+                                        ))}
+                            </div>
+                        )}
                     </div>
                     <button className="btn--explore">
                         Explore{' '}
@@ -77,10 +110,20 @@ export default function Home() {
                     <p>Drag to explore</p>
                 </div>
                 <Splide
-                    options={{ perPage: 5, wheel: true, pagination: false }}>
+                    options={{
+                        perPage: 5,
+                        wheel: true,
+                        pagination: false,
+                        breakpoints: { 600: { perPage: 1 } },
+                    }}>
                     {data &&
                         data.result.slice(1, 20).map((item, index) => (
-                            <SplideSlide key={index}>
+                            <SplideSlide
+                                key={index}
+                                style={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                }}>
                                 <TrendingBook book={item} />
                             </SplideSlide>
                         ))}
@@ -111,29 +154,46 @@ export default function Home() {
             </section>
 
             <section className={`romance ${unica.className}`}>
-                <h4>Romance</h4>
+                <h4>Beauty</h4>
                 <Splide
                     options={{
                         pagination: false,
                         perPage: 5,
                         wheel: true,
+                        breakpoints: {
+                            640: {
+                                perPage: 1,
+                            },
+                        },
                     }}>
                     {data &&
-                        data.result.slice(0, 10).map((item, index) => (
-                            <SplideSlide key={index}>
-                                <Book
-                                    book={item}
-                                    // token={token}
-                                />
-                            </SplideSlide>
-                        ))}
+                        data.result
+                            .filter((item) => item.category === 'beauty')
+                            .slice(0, 10)
+                            .map((item, index) => (
+                                <SplideSlide key={index}>
+                                    <Book
+                                        book={item}
+                                        // token={token}
+                                    />
+                                </SplideSlide>
+                            ))}
                 </Splide>
             </section>
 
             <section className={`adventure ${unica.className}`}>
                 <h4>Adventure</h4>
                 <Splide
-                    options={{ pagination: false, perPage: 5, wheel: true }}>
+                    options={{
+                        pagination: false,
+                        perPage: 5,
+                        wheel: true,
+                        breakpoints: {
+                            640: {
+                                perPage: 1,
+                            },
+                        },
+                    }}>
                     {data &&
                         data.result.slice(0, 10).map((item, index) => (
                             <SplideSlide key={index}>

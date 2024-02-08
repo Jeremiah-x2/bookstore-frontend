@@ -5,6 +5,7 @@ footer {
     padding-block: 2rem;
     margin-top: 4rem;
     border-top: 2px dotted;
+    color: #676767;
     h3 {
         font-weight: normal;
         font-size: 20px;
@@ -35,5 +36,11 @@ footer {
                 transform: translate(6px, 8px);
             }
         }
+    }
+
+    @media screen and (max-width: 600px) {
+        flex-direction: column;
+        gap: 4rem;
+        align-items: center;
     }
 }

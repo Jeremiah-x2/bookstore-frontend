@@ -3,10 +3,8 @@ import '@/app/components/styles/categories.scss';
 import Book from '@/app/components/Book';
 import React, { useEffect, useState } from 'react';
 
-// import { cookies } from 'next/headers';
-
 async function getBooksByCategory() {
-    const res = await fetch('http://localhost:5000/books', {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/books`, {
         credentials: 'include',
         next: {
             revalidate: 0,

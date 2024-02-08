@@ -1,11 +1,13 @@
 import './styles/cartItem.scss';
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { syne } from '../layout';
+import CartButton from './CartButton';
+import UpdateCartButton from './UpdateCartButton';
 
 export async function deleteOrder(id) {
-    const req = await fetch(`http://localhost:5000/orders/${id}`, {
+    const req = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders/${id}`, {
         method: 'DELETE',
         credentials: 'include',
     });
@@ -14,6 +16,7 @@ export async function deleteOrder(id) {
     console.log(res);
 }
 export default function OrderItem({ item, setFetchTrigger }) {
+    const [orderQuantity, setOrderQuantity] = useState(item.quantity);
     return (
         <div className={`order--item ${syne.className}`}>
             <Link href={`/catalog/${item.book._id}`}>
@@ -21,6 +24,7 @@ export default function OrderItem({ item, setFetchTrigger }) {
                     src={item.book.image}
                     width={100}
                     height={150}
+                    sizes="(max-width: 600) 50px"
                     alt="Order Item"
                 />
             </Link>
@@ -30,9 +34,15 @@ export default function OrderItem({ item, setFetchTrigger }) {
                     <p>{item.book.author}</p>
                 </div>
                 <div className="cart--add">
-                    <span className="reduce">-</span>
+                    {/* <span className="reduce">-</span>
                     <span className="count">{item.quantity}</span>
-                    <span className="add">+</span>
+                    <span className="add">+</span> */}
+                    {/* <CartButton book={item.book} /> */}
+                    <UpdateCartButton
+                        book={item.book}
+                        orderQuantity={orderQuantity}
+                        setOrderQuantity={setOrderQuantity}
+                    />
                 </div>
             </div>
             {/* {JSON.stringify(item)} */}

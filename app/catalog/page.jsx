@@ -1,6 +1,5 @@
 'use client';
 
-// import '../components/styles/catalog.scss';
 import '../components/styles/catalog.scss';
 import { Suspense, useEffect, useState } from 'react';
 import Book from '../components/Book';
@@ -8,19 +7,28 @@ import Loading from './loading';
 import { Syne } from 'next/font/google';
 import { Categories } from '../components/CustomSelect';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const syne = Syne({ subsets: ['latin'], weight: ['400', '500', '700'] });
 async function getAllBooks() {
-    const res = await fetch('http://localhost:5000/books', {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/books`, {
         credentials: 'include',
     });
 
     return res.json();
 }
 
-const options = ['Categories', 'Trending', 'Sports'];
+const options = [
+    'Categories',
+    'Trending',
+    'Sports',
+    'Beauty',
+    'Electronics',
+    'Books',
+    'Clothing',
+];
 
-export default function page() {
+export default function Catalog() {
     const [data, setData] = useState(null);
     const [numOfBooks, setNumOfBooks] = useState(20);
     const [search, setSearch] = useState('');
@@ -46,12 +54,47 @@ export default function page() {
                         onChange={(e) => setSearch(e.target.value)}
                         name="search"
                         placeholder="Type the name of book or author..."
-                        disabled={true}
+                        // disabled={true}
                     />
+                    {search !== '' &&
+                        data.result.filter(
+                            (item) =>
+                                item.title.startsWith(search) ||
+                                item.author.startsWith(search)
+                        ).length !== 0 && (
+                            <div className="search--result">
+                                {data &&
+                                    data.result
+                                        .filter(
+                                            (item) =>
+                                                item.title.startsWith(search) ||
+                                                item.author.startsWith(search)
+                                        )
+                                        .map((item, index) => (
+                                            <Link
+                                                href={`/catalog/${item._id}`}
+                                                key={index}>
+                                                <div>
+                                                    <Image
+                                                        src={item.image}
+                                                        width={50}
+                                                        height={100}
+                                                        alt="Image"
+                                                    />
+                                                    <div>
+                                                        <p>{item.title}</p>
+                                                        <p>{item.author}</p>
+                                                        <p>{item.price}</p>
+                                                    </div>
+                                                </div>
+                                            </Link>
+                                        ))}
+                            </div>
+                        )}
                 </div>
                 <div className="filter">
                     <p>
-                        Results <span>"NAME BOOK OR NAME AUTHOR"</span>
+                        Results <span>NAME BOOK OR NAME AUTHOR</span>
                     </p>
                     <div className="filters">
                         <Categories
@@ -64,34 +107,32 @@ export default function page() {
                     </div>
                 </div>
             </div>
-            <div className="books">
-                {data && search === ''
-                    ? data.result.slice(0, numOfBooks).map((item, index) => (
-                          <Book
-                              book={item}
-                              key={index}
-                          />
-                      ))
-                    : data &&
-                      data.result
-                          .filter(
-                              (item) =>
-                                  item.title
-                                      .toLowerCase()
-                                      .startsWith(search.toLowerCase()) ||
-                                  item.author
-                                      .toLowerCase()
-                                      .startsWith(search.toLowerCase())
-                          )
-                          .slice(0, numOfBooks)
-                          .map((item, index) => (
-                              <Book
-                                  book={item}
-                                  key={index}
-                              />
-                          ))}
-                {/* {data && JSON.stringify(data.result.slice(0, 2))} */}
-            </div>
+            {data && (
+                <div className="books">
+                    {categoriesCurrentValue === 'Categories'
+                        ? data.result
+                              .slice(0, numOfBooks)
+                              .map((item, index) => (
+                                  <Book
+                                      book={item}
+                                      key={index}
+                                  />
+                              ))
+                        : data.result
+                              .filter(
+                                  (item) =>
+                                      item.category ===
+                                      categoriesCurrentValue.toLowerCase()
+                              )
+                              .slice(0, numOfBooks)
+                              .map((item, index) => (
+                                  <Book
+                                      book={item}
+                                      key={index}
+                                  />
+                              ))}
+                </div>
+            )}
             <div className="more">
                 <button
                     onClick={() => setNumOfBooks((prev) => prev + 10)}

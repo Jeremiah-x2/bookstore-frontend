@@ -17,18 +17,18 @@ export default function Book({ book }) {
                     height={300}
                     alt="Book Image"
                 />
+                <div className="about">
+                    <p>
+                        Title <span>{book.title.slice(0, 20)}</span>
+                    </p>
+                    <p>
+                        Author <span>{book.author}</span>
+                    </p>
+                </div>
             </Link>
             <div className="buy">
                 <div>
                     <span className="price">${book.price}</span>
-                    <button className="favorite--btn">
-                        <Image
-                            src={'/images/BOOKMARK_SIMPLE.svg'}
-                            width={12}
-                            height={18}
-                            alt="Favorite"
-                        />
-                    </button>
                 </div>
                 <CartButton book={book} />
             </div>

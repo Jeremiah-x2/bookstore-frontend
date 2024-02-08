@@ -12,11 +12,16 @@
     gap: $gap;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     padding: 60px 70px;
 }
 
 header {
+    z-index: 10;
     @include flex(space-between, center, auto);
     margin-bottom: 4.375rem;
     .logo {
@@ -25,8 +30,32 @@ header {
     .cart {
         @include flex(space-between, center, 0.5rem);
     }
+    a {
+        text-decoration: none;
+        color: #3d3c3c;
+        font-size: 20px;
+    }
+    transition: 0.3s all;
+    &.sticky {
+        background-color: white;
+        position: fixed;
+        top: 0;
+        left: 0;
+        padding-inline: 70px;
+        padding-block: 30px;
+        width: 100%;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    }
 }
 
 button {
     cursor: pointer;
+}
+
+@media screen and (max-width: 600px) {
+    body {
+        padding: 30px 24px;
+        // width: 100vw;
+        overflow-x: hidden;
+    }
 }

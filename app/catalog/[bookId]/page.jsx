@@ -1,11 +1,10 @@
 'use client';
-import { useEffect, useState } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import '@/app/components/styles/bookById.scss';
 import { Syne, Unica_One } from 'next/font/google';
 import CartButton from '@/app/components/CartButton';
-import UpdateCartButton from '@/app/components/UpdateCartButton';
 
 const unica = Unica_One({ subsets: ['latin'], weight: '400' });
 const syne = Syne({ subsets: ['latin'], weight: ['400', '500', '600'] });
@@ -21,20 +20,44 @@ async function getBookById(id) {
     return result;
 }
 
-export default function BookDetails({ params }) {
+export default function BookDetails({ params, showCart }) {
     const [book, setBook] = useState(null);
+
+    async function addItem() {
+        const request = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/orders/`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({ book: book._id }),
+            }
+        );
+        const response = await request.json();
+        console.log(response);
+        // router.refresh();
+        // router.push(`/catalog/${book._id}`);
+        // if (request.status === 201) {
+        //     setOrderQuantity(1);
+        // }
+
+        console.log(request.status);
+    }
+
     useEffect(() => {
         async function getABook() {
             const bookById = await getBookById(params.bookId);
-            setBook(bookById);
+            await setBook(bookById);
         }
         getABook();
     }, []);
     return (
         <>
+            {JSON.stringify(showCart)}
             {book && (
                 <section className={`${syne.className}`}>
-                    {JSON.stringify(book)}
                     <div className="product--details">
                         <Image
                             src={book.image}
@@ -57,34 +80,44 @@ export default function BookDetails({ params }) {
                             <div className={`purchase ${syne.className}`}>
                                 <div>
                                     <span className="price">${book.price}</span>
-                                    {book.orders && (
-                                        <></>
-                                        // <div
-                                        //     className={`order--count ${unica.className}`}>
-                                        //     <span className="reduce">-</span>
-                                        //     <span className="count">
-                                        //         {book.orders.quantity}
-                                        //     </span>
-                                        //     <span className="add">+</span>
-                                        // </div>
-                                        // <UpdateCartButton />
-                                    )}
+                                    <button className={`buy ${syne.className}`}>
+                                        <Link
+                                            href={'/checkout'}
+                                            onClick={addItem}>
+                                            Buy Now
+                                        </Link>
+                                    </button>
                                 </div>
+                                <CartButton book={book} />
                                 <div className={`cart--buy`}>
-                                    {book.orders && (
+                                    {/* {book.orders && (
                                         <>
-                                            {/* {JSON.stringify(book)} */}
                                             <CartButton book={book} />
                                         </>
-                                    )}
-                                    <button className={`buy ${syne.className}`}>
-                                        <Link href={'/checkout'}>Buy Now</Link>
-                                    </button>
+                                    )} */}
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div></div>
+                    <div className="details">
+                        {/* {JSON.stringify(Object.entries(book))} */}
+                        {/* {Object.entries(book)
+                            .filter(
+                                (item) =>
+                                    item[0] !== '_id' &&
+                                    item[0] !== 'stock_quantity' &&
+                                    item[0] !== 'image' &&
+                                    item[0] !== 'book_id'
+                            )
+                            .map((item, index) => (
+                                <div key={index}>
+                                    <span>{item[0]}:</span>
+                                    {item[1]}
+                                </div>
+                            ))} */}
+                    </div>
+
+                    <div className="more"></div>
                 </section>
             )}
         </>

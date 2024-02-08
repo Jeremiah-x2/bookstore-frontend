@@ -21,14 +21,17 @@ export default function Login() {
 
     async function loginUser(e) {
         e.preventDefault();
-        const request = await fetch('http://localhost:5000/users/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            credentials: 'include',
-            body: JSON.stringify(formData),
-        });
+        const request = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/users/login`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify(formData),
+            }
+        );
         const response = await request.json();
         if (request.status === 401) {
             toast('Wrong Password');
@@ -67,7 +70,7 @@ export default function Login() {
                 <button className="create--acct--btn btn">Login</button>
             </form>
             <p>
-                Don't have and account{' '}
+                Don&apos;t have and account{' '}
                 <Link href={'/user/signup'}>Sign Up</Link>
             </p>
             <ToastContainer />

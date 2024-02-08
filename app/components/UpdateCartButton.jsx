@@ -11,14 +11,17 @@ export default function UpdateCartButton({
 }) {
     // const [count, setCount] = useState(orderQuantity);
     async function updateQuantity(id, incrementBy) {
-        const req = await fetch(`http://localhost:5000/orders/${id}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ incValue: incrementBy }),
-            credentials: 'include',
-        });
+        const req = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/orders/${id}`,
+            {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ incValue: incrementBy }),
+                credentials: 'include',
+            }
+        );
         const res = await req.json();
         if (req.ok) {
             setOrderQuantity((prev) => {

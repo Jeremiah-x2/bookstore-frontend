@@ -15,27 +15,33 @@ export default function Cart({
     const [orders, setOrders] = useState(null);
     useEffect(() => {
         async function getOrders() {
-            const request = await fetch('http://localhost:5000/orders', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include',
-            });
+            const request = await fetch(
+                `${process.env.NEXT_PUBLIC_API_URL}/orders`,
+                {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                }
+            );
             const response = await request.json();
-            if (request.status === 200) {
-                setIsAuthenticate(true);
-            }
+
             if (request.status === 403) {
                 setIsAuthenticate(false);
             }
-
-            console.log('request status', request.status);
-            console.log('Request response', response);
-
             setOrders(response);
         }
-        getOrders();
+        if (
+            document.cookie
+                .split(';')
+                .some((cookie) => cookie.trim().startsWith('token='))
+        ) {
+            setIsAuthenticate(true);
+        }
+        if (isAuthenticate) {
+            getOrders();
+        }
     }, [fetchTrigger]);
     return (
         <section
@@ -63,17 +69,7 @@ export default function Cart({
                 ) : (
                     <>
                         <button className="logout--btn">Logout</button>
-                        {/* <div className="orders">
-                            {isAuthenticate && orders
-                                ? orders.orders.map((item, index) => (
-                                      <OrderItem
-                                          item={item}
-                                          key={index}
-                                      />
-                                  ))
-                                : ''}
-                        </div> */}
-                        {isAuthenticate && orders && (
+                        {orders && (
                             <>
                                 <div className="orders">
                                     {orders.orders.map((item, index) => (

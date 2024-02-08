@@ -11,21 +11,19 @@ export default function CartButton({ book }) {
 
     const router = useRouter();
     async function addItem() {
-        const request = await fetch(`http://localhost:5000/orders/`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${window.localStorage.getItem(
-                    'userToken'
-                )}`,
-            },
-            credentials: 'include',
-            body: JSON.stringify({ book: book._id }),
-        });
+        const request = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/orders/`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({ book: book._id }),
+            }
+        );
         const response = await request.json();
         console.log(response);
-        // router.refresh();
-        // router.push(`/catalog/${book._id}`);
         if (request.status === 201) {
             setOrderQuantity(1);
         }
@@ -34,6 +32,7 @@ export default function CartButton({ book }) {
     }
     return (
         <>
+            {JSON.stringify(book)}
             {orderQuantity && orderQuantity > 0 ? (
                 <>
                     <UpdateCartButton
@@ -57,7 +56,6 @@ export default function CartButton({ book }) {
                     </button>
                 </>
             )}
-            {/* {JSON.stringify(book)} */}
         </>
     );
 }
