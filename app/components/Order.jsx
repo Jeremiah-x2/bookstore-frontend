@@ -38,6 +38,7 @@ export default function OrderItem({ item, setFetchTrigger }) {
                     <span className="count">{item.quantity}</span>
                     <span className="add">+</span> */}
                     {/* <CartButton book={item.book} /> */}
+
                     <UpdateCartButton
                         book={item.book}
                         orderQuantity={orderQuantity}

@@ -28,6 +28,21 @@
             z-index: -10;
         }
     }
+    .update--cart {
+        button {
+            padding: 0.4rem;
+            width: 20px;
+            height: 20px;
+            font-size: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .count {
+            padding: 0.4rem;
+            // display: none;
+        }
+    }
     .heading {
         .title {
             font-size: 32px;
