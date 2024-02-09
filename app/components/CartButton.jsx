@@ -32,7 +32,6 @@ export default function CartButton({ book }) {
     }
     return (
         <>
-            {JSON.stringify(book)}
             {orderQuantity && orderQuantity > 0 ? (
                 <>
                     <UpdateCartButton

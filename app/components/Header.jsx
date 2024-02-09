@@ -38,6 +38,13 @@ export default function Header({ setShowCart, setFetchTrigger }) {
                     BOOKSTORE
                 </div>
             </Link>
+            <div>
+                Click{' '}
+                <Link href={'/catalog'}>
+                    <button>Here</button>
+                </Link>{' '}
+                to see all books
+            </div>
             <div className="cart">
                 {isAuthorized && <div>User Account</div>}
                 <Image

@@ -1,15 +1,15 @@
 'use client';
 
-import Image from 'next/image';
 import './components/styles/page.scss';
-import { Syne, Unica_One } from 'next/font/google';
-import Book from './components/Book';
-import { Splide, SplideSlide } from '@splidejs/react-splide';
-import '@splidejs/react-splide/css';
-import { Suspense, useEffect, useState } from 'react';
-import TrendingBook from './components/TrendingBook';
 import Link from 'next/link';
-import { sign, decode, verify } from 'jsonwebtoken';
+import Image from 'next/image';
+import Book from './components/Book';
+import { Syne, Unica_One } from 'next/font/google';
+import '@splidejs/react-splide/css';
+import { Splide, SplideSlide } from '@splidejs/react-splide';
+import { useContext, useEffect, useState } from 'react';
+import TrendingBook from './components/TrendingBook';
+import { pageTriggerContext } from './layout';
 
 const syne = Syne({ subsets: ['latin'], weight: ['500', '400', '600'] });
 const unica = Unica_One({ subsets: ['latin'], weight: '400' });
@@ -19,26 +19,30 @@ async function getBooks() {
         next: { revalidate: 0 },
         credentials: 'include',
     });
+    console.log(response);
     const data = await response.json();
 
     return data;
 }
 
 export default function Home() {
+    const pageTrigger = useContext(pageTriggerContext);
     const [data, setData] = useState(null);
     const [search, setSearch] = useState('');
+    const [page, setPage] = useState(false);
+
     useEffect(() => {
         async function parseData() {
-            const token = window.localStorage.getItem('userToken');
-            const res = await getBooks();
-            await setData(res);
-            console.log(res.result.slice(0, 1));
+            try {
+                const response = await getBooks();
+                setData(response);
+            } catch (error) {
+                console.error('Error fetching books:', error);
+            }
         }
 
-        console.log('Cookie', document.cookie);
-
         parseData();
-    }, []);
+    }, [page]);
     return (
         <main>
             <section className={`hero ${syne.className}`}>
@@ -114,7 +118,10 @@ export default function Home() {
                         perPage: 5,
                         wheel: true,
                         pagination: false,
-                        breakpoints: { 600: { perPage: 1 } },
+                        breakpoints: {
+                            600: { perPage: 1 },
+                            900: { perPage: 3 },
+                        },
                     }}>
                     {data &&
                         data.result.slice(1, 20).map((item, index) => (
@@ -161,9 +168,8 @@ export default function Home() {
                         perPage: 5,
                         wheel: true,
                         breakpoints: {
-                            640: {
-                                perPage: 1,
-                            },
+                            640: { perPage: 1 },
+                            900: { perPage: 3 },
                         },
                     }}>
                     {data &&
@@ -172,10 +178,7 @@ export default function Home() {
                             .slice(0, 10)
                             .map((item, index) => (
                                 <SplideSlide key={index}>
-                                    <Book
-                                        book={item}
-                                        // token={token}
-                                    />
+                                    <Book book={item} />
                                 </SplideSlide>
                             ))}
                 </Splide>
@@ -189,9 +192,8 @@ export default function Home() {
                         perPage: 5,
                         wheel: true,
                         breakpoints: {
-                            640: {
-                                perPage: 1,
-                            },
+                            640: { perPage: 1 },
+                            900: { perPage: 3 },
                         },
                     }}>
                     {data &&

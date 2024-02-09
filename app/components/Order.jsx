@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { syne } from '../layout';
 import CartButton from './CartButton';
-import UpdateCartButton from './UpdateCartButton';
+import { updateQuantity } from './UpdateCartButton';
 
 export async function deleteOrder(id) {
     const req = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders/${id}`, {
@@ -39,14 +39,53 @@ export default function OrderItem({ item, setFetchTrigger }) {
                     <span className="add">+</span> */}
                     {/* <CartButton book={item.book} /> */}
 
-                    <UpdateCartButton
+                    {/* <UpdateCartButton
                         book={item.book}
                         orderQuantity={orderQuantity}
                         setOrderQuantity={setOrderQuantity}
-                    />
+                        setFetchTrigger={setFetchTrigger}
+                    /> */}
+                    <div className="update--cart">
+                        {orderQuantity === 1 ? (
+                            <button
+                                className="increase"
+                                onClick={() => {
+                                    deleteOrder(item.book._id);
+                                    setOrderQuantity(0);
+                                    setFetchTrigger((prev) => !prev);
+                                }}>
+                                -
+                            </button>
+                        ) : (
+                            <button
+                                className="increase"
+                                onClick={() => {
+                                    updateQuantity(
+                                        item.book._id,
+                                        -1,
+                                        setOrderQuantity
+                                    );
+                                    setFetchTrigger((prev) => !prev);
+                                }}>
+                                -
+                            </button>
+                        )}
+                        <span className="count">{orderQuantity}</span>
+                        <button
+                            className="add"
+                            onClick={() => {
+                                updateQuantity(
+                                    item.book._id,
+                                    1,
+                                    setOrderQuantity
+                                );
+                                setFetchTrigger((prev) => !prev);
+                            }}>
+                            +
+                        </button>
+                    </div>
                 </div>
             </div>
-            {/* {JSON.stringify(item)} */}
             <div className="p--delete">
                 <p>
                     ${item.book.price} <br />{' '}

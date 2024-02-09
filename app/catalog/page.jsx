@@ -13,7 +13,11 @@ const syne = Syne({ subsets: ['latin'], weight: ['400', '500', '700'] });
 async function getAllBooks() {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/books`, {
         credentials: 'include',
+        next: {
+            revalidate: 0,
+        },
     });
+    console.log(res);
 
     return res.json();
 }
@@ -30,6 +34,7 @@ const options = [
 
 export default function Catalog() {
     const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
     const [numOfBooks, setNumOfBooks] = useState(20);
     const [search, setSearch] = useState('');
     const [categoriesCurrentValue, setcategoriesCurrentValue] = useState(
@@ -42,10 +47,12 @@ export default function Catalog() {
             setData(books);
         }
         setBooksData();
+        // setLoading(false);
     }, []);
 
     return (
         <section className="all--books">
+            {/* <div className={`loading-cat ${loading ? 'show' : ''}`}></div> */}
             <div className="search--books">
                 <div className="search--input">
                     <input
@@ -57,6 +64,7 @@ export default function Catalog() {
                         // disabled={true}
                     />
                     {search !== '' &&
+                        data &&
                         data.result.filter(
                             (item) =>
                                 item.title.startsWith(search) ||

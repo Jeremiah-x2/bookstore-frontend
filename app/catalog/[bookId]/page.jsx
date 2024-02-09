@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import '@/app/components/styles/bookById.scss';
 import { Syne, Unica_One } from 'next/font/google';
 import CartButton from '@/app/components/CartButton';
+import { usePathname, useRouter } from 'next/navigation';
 
 const unica = Unica_One({ subsets: ['latin'], weight: '400' });
 const syne = Syne({ subsets: ['latin'], weight: ['400', '500', '600'] });
@@ -22,6 +23,8 @@ async function getBookById(id) {
 
 export default function BookDetails({ params, showCart }) {
     const [book, setBook] = useState(null);
+    const router = useRouter();
+    const path = usePathname();
 
     async function addItem() {
         const request = await fetch(
@@ -55,7 +58,6 @@ export default function BookDetails({ params, showCart }) {
     }, []);
     return (
         <>
-            {JSON.stringify(showCart)}
             {book && (
                 <section className={`${syne.className}`}>
                     <div className="product--details">

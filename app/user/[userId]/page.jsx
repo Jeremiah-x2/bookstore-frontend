@@ -8,9 +8,7 @@ async function getUser(id) {
             credentials: 'include',
         }
     );
-    console.log(request);
     const res = await request.json();
-    console.log(res);
     return res;
 }
 

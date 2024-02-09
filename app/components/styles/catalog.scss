@@ -13,7 +13,15 @@
     .books {
         @include grid_books_catalog();
     }
-
+    .loading-cat {
+        width: 100%;
+        height: 100vh;
+        background-color: red;
+        display: block;
+        &.hide {
+            display: none;
+        }
+    }
     .search--books {
         margin-bottom: 4rem;
         .search--input {

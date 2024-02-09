@@ -1,9 +1,10 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import './styles/cart.scss';
 import Link from 'next/link';
 import OrderItem from './Order';
-import { syne } from '../layout';
+import { pageTriggerContext, pageTriggerDispatch, syne } from '../layout';
+import { useRouter } from 'next/navigation';
 
 export default function Cart({
     showCart,
@@ -11,6 +12,9 @@ export default function Cart({
     fetchTrigger,
     setFetchTrigger,
 }) {
+    const router = useRouter();
+    const trigger = useContext(pageTriggerContext);
+    const dispatch = useContext(pageTriggerDispatch);
     const [isAuthenticate, setIsAuthenticate] = useState(false);
     const [orders, setOrders] = useState(null);
     useEffect(() => {
@@ -48,11 +52,16 @@ export default function Cart({
             className={`cart--container ${showCart ? 'show' : ''} ${
                 syne.className
             }`}>
-            {/* {JSON.stringify(orders)} */}
+            {trigger}
             <div className="heading">
                 <span
                     className="close"
-                    onClick={() => setShowCart(false)}>
+                    onClick={() => {
+                        setShowCart(false);
+                        dispatch({
+                            type: 'changed',
+                        });
+                    }}>
                     X
                 </span>
                 <p className="title">Your Cart</p>
@@ -80,7 +89,6 @@ export default function Cart({
                                         />
                                     ))}
                                 </div>
-                                {/* {JSON.stringify(orders.orders)} */}
                                 {orders.orders.length !== 0 ? (
                                     <div className="total">
                                         <div className="price">
