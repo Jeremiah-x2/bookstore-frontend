@@ -68,7 +68,6 @@ export default function Checkout() {
             setFetchTrigger((prev) => !prev);
             router.push('/ordersuccessful');
         }
-        console.log(response);
     }
 
     useEffect(() => {

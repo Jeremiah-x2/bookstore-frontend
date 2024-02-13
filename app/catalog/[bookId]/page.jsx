@@ -6,22 +6,32 @@ import '@/app/components/styles/bookById.scss';
 import { Syne, Unica_One } from 'next/font/google';
 import CartButton from '@/app/components/CartButton';
 import { usePathname, useRouter } from 'next/navigation';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const unica = Unica_One({ subsets: ['latin'], weight: '400' });
 const syne = Syne({ subsets: ['latin'], weight: ['400', '500', '600'] });
 
 async function getBookById(id) {
-    const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/books/${id}`,
-        {
-            credentials: 'include',
-            next: { revalidate: 0 },
+    try {
+        const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/books/${id}`,
+            {
+                credentials: 'include',
+                next: { revalidate: 0 },
+            }
+        );
+        if (response.status === 200) {
+            const result = await response.json();
+            console.log(result);
+
+            return result;
         }
-    );
-
-    const result = await response.json();
-
-    return result;
+        if (response.status === 500) {
+        }
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 export default function BookDetails({ params, showCart }) {
@@ -61,7 +71,7 @@ export default function BookDetails({ params, showCart }) {
     }, []);
     return (
         <>
-            {book && (
+            {book ? (
                 <section className={`${syne.className}`}>
                     <div className="product--details">
                         <Image
@@ -104,9 +114,9 @@ export default function BookDetails({ params, showCart }) {
                             </div>
                         </div>
                     </div>
-                    <div className="details">
+                    <div className={`details ${unica.className}`}>
                         {/* {JSON.stringify(Object.entries(book))} */}
-                        {/* {Object.entries(book)
+                        {Object.entries(book)
                             .filter(
                                 (item) =>
                                     item[0] !== '_id' &&
@@ -119,12 +129,43 @@ export default function BookDetails({ params, showCart }) {
                                     <span>{item[0]}:</span>
                                     {item[1]}
                                 </div>
-                            ))} */}
+                            ))}
                     </div>
 
                     <div className="more"></div>
                 </section>
+            ) : (
+                <BookByIdSkeleton />
             )}
         </>
+    );
+}
+
+function BookByIdSkeleton() {
+    return (
+        <div className="book--skeleton">
+            <div className="top">
+                <div className="image">
+                    <Skeleton height={'100%'} />
+                </div>
+                <div className="book--desc">
+                    <h4>
+                        <Skeleton height={'100%'} />
+                    </h4>
+                    <p className="title">
+                        <Skeleton height={'100%'} />
+                    </p>
+                    <p className="desc">
+                        <Skeleton height={'100%'} />
+                    </p>
+                    <div>
+                        <Skeleton height={'100%'} />
+                    </div>
+                    <div>
+                        <Skeleton />
+                    </div>
+                </div>
+            </div>
+        </div>
     );
 }

@@ -36,7 +36,6 @@ const options = [
 
 export default function Catalog() {
     const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(true);
     const [numOfBooks, setNumOfBooks] = useState(20);
     const [search, setSearch] = useState('');
     const [categoriesCurrentValue, setcategoriesCurrentValue] = useState(
@@ -49,13 +48,10 @@ export default function Catalog() {
             setData(books);
         }
         setBooksData();
-        setLoading(false);
     }, []);
 
     return (
         <section className="all--books">
-            {/* <Skeleton /> */}
-            {/* <div className={`loading-cat ${!loading ? 'hide' : ''}`}></div> */}
             <div className="search--books">
                 <div className="search--input">
                     <input

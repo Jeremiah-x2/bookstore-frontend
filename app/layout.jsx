@@ -3,7 +3,6 @@ import React, { useReducer } from 'react';
 import { Inter, Unica_One, Syne } from 'next/font/google';
 import './components/styles/globals.scss';
 import Header from './components/Header';
-import Cart from './components/Cart';
 import { useEffect, useState, createContext, useContext } from 'react';
 import Footer from './components/Footer';
 

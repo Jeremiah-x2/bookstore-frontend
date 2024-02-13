@@ -124,3 +124,44 @@ section {
         }
     }
 }
+
+.book--skeleton {
+    & > .top {
+        display: flex;
+        gap: 8rem;
+        width: 80%;
+        margin-inline: auto;
+        .image {
+            width: 200px;
+            height: 300px;
+        }
+        .book--desc {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            justify-content: space-between;
+            flex: 1;
+            h4 {
+                height: 24px;
+            }
+            .title {
+                height: 40px;
+                margin-bottom: 20px;
+            }
+            .desc {
+                height: 80px;
+            }
+        }
+    }
+
+    @media screen and (max-width: 600px) {
+        & > .top {
+            flex-direction: column;
+            gap: 2rem;
+        }
+        width: 100%;
+        .image {
+            margin-inline: auto;
+        }
+    }
+}
