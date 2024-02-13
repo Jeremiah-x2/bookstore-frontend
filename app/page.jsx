@@ -12,6 +12,7 @@ import TrendingBook from './components/TrendingBook';
 import { pageTriggerContext } from './layout';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
+import { Box } from './catalog/page';
 
 const syne = Syne({ subsets: ['latin'], weight: ['500', '400', '600'] });
 const unica = Unica_One({ subsets: ['latin'], weight: '400' });
@@ -21,7 +22,6 @@ async function getBooks() {
         next: { revalidate: 0 },
         credentials: 'include',
     });
-    console.log(response);
     const data = await response.json();
 
     return data;
@@ -142,7 +142,7 @@ export default function Home() {
                             900: { perPage: 3 },
                         },
                     }}>
-                    {data &&
+                    {data ? (
                         data.result.slice(1, 20).map((item, index) => (
                             <SplideSlide
                                 key={index}
@@ -152,7 +152,13 @@ export default function Home() {
                                 }}>
                                 <TrendingBook book={item} />
                             </SplideSlide>
-                        ))}
+                        ))
+                    ) : (
+                        <Box
+                            box={5}
+                            gap={'2rem'}
+                        />
+                    )}
                 </Splide>
             </section>
             <section className="categories--section">
@@ -199,14 +205,20 @@ export default function Home() {
                             900: { perPage: 3 },
                         },
                     }}>
-                    {data &&
+                    {data ? (
                         data.result
                             .filter((item) => item.category === 'beauty')
                             .map((item, index) => (
                                 <SplideSlide key={index}>
                                     <Book book={item} />
                                 </SplideSlide>
-                            ))}
+                            ))
+                    ) : (
+                        <Box
+                            box={5}
+                            gap={'2rem'}
+                        />
+                    )}
                 </Splide>
             </section>
 
@@ -230,14 +242,20 @@ export default function Home() {
                             900: { perPage: 3 },
                         },
                     }}>
-                    {data &&
+                    {data ? (
                         data.result
                             .filter((item) => item.category === 'sports')
                             .map((item, index) => (
                                 <SplideSlide key={index}>
                                     <Book book={item} />
                                 </SplideSlide>
-                            ))}
+                            ))
+                    ) : (
+                        <Box
+                            box={5}
+                            gap={'2rem'}
+                        />
+                    )}
                 </Splide>
             </section>
         </main>

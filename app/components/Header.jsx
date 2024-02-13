@@ -4,16 +4,16 @@ import { Unica_One } from 'next/font/google';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { FaBars, FaXbox } from 'react-icons/fa';
 
 const unica = Unica_One({ subsets: ['latin'], weight: '400' });
 
 export default function Header({ setFetchTrigger }) {
     const router = useRouter();
     const [isAuthorized, setisAuthorized] = useState(null);
+    const [menu, setMenu] = useState(false);
 
     async function logout(e) {
-        console.log('User logged out');
-        console.log(e.target);
         try {
             const req = await fetch(
                 `${process.env.NEXT_PUBLIC_API_URL}/users/logout`,
@@ -22,14 +22,11 @@ export default function Header({ setFetchTrigger }) {
                     credentials: 'include',
                 }
             );
-            console.log(req);
             if (req.status === 201) {
                 localStorage.removeItem('_id');
                 await new Promise((resolve) =>
                     setTimeout(() => router.push('/'), 1000)
                 );
-                console.log('after new Promise');
-                // router.push('/');
             }
         } catch (error) {
             console.log(error);
@@ -42,9 +39,6 @@ export default function Header({ setFetchTrigger }) {
             header.classList.toggle('sticky', scrollY > 200);
         });
         const checkIsAuth = () => {
-            // const isAuth = document.cookie
-            //     .split(';')
-            //     .some((cookie) => cookie.trim().startsWith('token='));
             const isAuth = window.localStorage.getItem('_id') ? true : false;
             setisAuthorized(isAuth);
         };
@@ -57,7 +51,6 @@ export default function Header({ setFetchTrigger }) {
 
     return (
         <header>
-            {/* {isAuthorized ? 'Hello world' : 'Hello'} */}
             <Link href={'/'}>
                 <div className={`logo ${unica.className}`}>
                     <Image
@@ -70,7 +63,7 @@ export default function Header({ setFetchTrigger }) {
                 </div>
             </Link>
 
-            <div className="cart">
+            <div className={`cart ${menu ? 'show' : ''}`}>
                 {isAuthorized ? (
                     <>
                         <Link
@@ -109,6 +102,11 @@ export default function Header({ setFetchTrigger }) {
                         }}
                     />
                 </Link>
+            </div>
+            <div
+                className="hamburger"
+                onClick={() => setMenu((prev) => !prev)}>
+                {!menu ? <FaBars /> : <FaXbox />}
             </div>
         </header>
     );

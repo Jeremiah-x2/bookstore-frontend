@@ -25,14 +25,11 @@ export default function CartButton({ book }) {
             }
         );
         const response = await request.json();
-        console.log(response);
         if (request.status === 201) {
             setOrderQuantity(1);
         }
         if (request.status === 500) {
         }
-
-        console.log(request.status);
     }
     return (
         <>

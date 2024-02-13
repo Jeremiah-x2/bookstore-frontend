@@ -8,6 +8,8 @@ import { Syne } from 'next/font/google';
 import { Categories } from '../components/CustomSelect';
 import Image from 'next/image';
 import Link from 'next/link';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const syne = Syne({ subsets: ['latin'], weight: ['400', '500', '700'] });
 async function getAllBooks() {
@@ -52,7 +54,8 @@ export default function Catalog() {
 
     return (
         <section className="all--books">
-            <div className={`loading-cat ${!loading ? 'hide' : ''}`}></div>
+            {/* <Skeleton /> */}
+            {/* <div className={`loading-cat ${!loading ? 'hide' : ''}`}></div> */}
             <div className="search--books">
                 <div className="search--input">
                     <input
@@ -115,16 +118,25 @@ export default function Catalog() {
                     </div>
                 </div>
             </div>
-            {data && (
+            {data ? (
                 <div className="books">
                     {categoriesCurrentValue === 'Categories'
                         ? data.result
                               .slice(0, numOfBooks)
                               .map((item, index) => (
-                                  <Book
-                                      book={item}
-                                      key={index}
-                                  />
+                                  <>
+                                      {(
+                                          <Book
+                                              book={item}
+                                              key={index}
+                                          />
+                                      ) || (
+                                          <Skeleton
+                                              containerClassName=""
+                                              flex-1
+                                          />
+                                      )}
+                                  </>
                               ))
                         : data.result
                               .filter(
@@ -140,6 +152,8 @@ export default function Catalog() {
                                   />
                               ))}
                 </div>
+            ) : (
+                <Box box={20} />
             )}
             <div className="more">
                 <button
@@ -157,3 +171,50 @@ export default function Catalog() {
         </section>
     );
 }
+
+export function Box({ box, gap }) {
+    return (
+        <div
+            style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(5, 1fr)',
+                rowGap: '1rem',
+                columnGap: gap || 'auto',
+            }}>
+            {Array(box)
+                .fill(0)
+                .map((item, index) => (
+                    <div
+                        key={index}
+                        style={{
+                            border: '1px solid #ccc',
+
+                            marginBottom: '0.5rem',
+                            width: 200,
+                            height: 300,
+                        }}>
+                        <Skeleton
+                            width={200}
+                            height={300}
+                            borderRadius={12}
+                        />
+                    </div>
+                ))}
+        </div>
+    );
+}
+
+// Method 1: Use the wrapper prop
+// const wrapped1 = (
+//     <Skeleton
+//         wrapper={Box}
+//         count={5}
+//     />
+// );
+
+// // Method 2: Do it "the normal way"
+// const wrapped2 = (
+//     <Box>
+//         <Skeleton />
+//     </Box>
+// );

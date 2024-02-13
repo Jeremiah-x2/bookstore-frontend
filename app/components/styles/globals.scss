@@ -87,8 +87,11 @@ header {
             }
         }
     }
+    .hamburger {
+        display: none;
+        cursor: pointer;
+    }
 }
-
 
 button {
     cursor: pointer;
@@ -99,5 +102,37 @@ button {
         padding: 30px 24px;
         // width: 100vw;
         overflow-x: hidden;
+    }
+    header {
+        .cart {
+            display: none;
+            &.show {
+                display: block;
+                position: absolute;
+                width: 90%;
+                background-color: whitesmoke;
+                left: 50%;
+                top: 18px;
+                transform: translateX(-50%);
+                padding: 1.6rem;
+                z-index: 10;
+                display: flex;
+                flex-direction: column;
+                gap: 2rem;
+                border-radius: 12px;
+                box-shadow: 0px 12px 16px rgba(0, 0, 0, 0.3);
+                .account--auth {
+                    display: flex;
+                    align-items: center;
+                    flex-direction: column;
+                }
+            }
+        }
+        .hamburger {
+            display: block;
+            z-index: 100;
+            right: 20px;
+            position: relative;
+        }
     }
 }

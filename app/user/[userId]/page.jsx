@@ -1,5 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 async function getUser(id) {
     const request = await fetch(
@@ -19,18 +21,19 @@ export default function Account({ params }) {
     useEffect(() => {
         async function userDataGet() {
             const response = await getUser(params.userId);
+
             setUserData(response);
         }
         if (localStorage.getItem('_id')) {
-            userDataGet();
             setIsUser(true);
+            userDataGet();
         }
     }, []);
     return (
         <>
             {userData && (
                 <div>
-                    <h2>Name: {userData.name}</h2>
+                    <h2>Name: {userData.name || <Skeleton />}</h2>
                     <p>Email: {userData.email}</p>
                 </div>
             )}

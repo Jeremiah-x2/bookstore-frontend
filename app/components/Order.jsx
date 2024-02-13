@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { syne } from '../layout';
-import CartButton from './CartButton';
 import { updateQuantity } from './UpdateCartButton';
 
 export async function deleteOrder(id) {
@@ -11,9 +10,7 @@ export async function deleteOrder(id) {
         method: 'DELETE',
         credentials: 'include',
     });
-    console.log(req);
     const res = await req.json();
-    console.log(res);
 }
 export default function OrderItem({ item, setFetchTrigger }) {
     const [orderQuantity, setOrderQuantity] = useState(item.quantity);

@@ -6,7 +6,8 @@ import OrderItem from '../components/Order';
 import Link from 'next/link';
 import { Syne } from 'next/font/google';
 import { motion } from 'framer-motion';
-import { resolve } from 'styled-jsx/css';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const syne = Syne({ subsets: ['latin'], weight: ['400', '500', '500'] });
 
@@ -27,6 +28,12 @@ async function getOrders() {
         if (!request.ok) {
             throw new Error('Failed to fetch orders');
         }
+        await new Promise((resolve) =>
+            setTimeout(() => {
+                console.log('Hello');
+                resolve();
+            }, 3000)
+        );
 
         const response = await request.json();
         console.log(response);
@@ -55,6 +62,7 @@ export default function Checkout() {
                 credentials: 'include',
             }
         );
+
         const response = await request.json();
         if (request.ok) {
             setFetchTrigger((prev) => !prev);
@@ -194,9 +202,9 @@ export default function Checkout() {
                         </div>
                     )
                 ) : (
-                    <div className="error">
-                        Opps! something wrong. Can&apos;t get orders
-                    </div>
+                    <>
+                        <OrderSkeleton />
+                    </>
                 )
             ) : (
                 <div className="not--auth--cart">
@@ -229,4 +237,37 @@ function CheckoutForm() {
             <label htmlFor=""></label>
         </form>
     );
+}
+
+function OrderSkeleton() {
+    return Array(4)
+        .fill(0)
+        .map((item, index) => (
+            <div
+                className="order--skeleton"
+                key={index}>
+                <div className="image">
+                    <Skeleton height={'100%'} />
+                </div>
+                <div className="desc">
+                    <p>
+                        <Skeleton
+                            count={2}
+                            style={{ marginBottom: 8 }}
+                        />
+                    </p>
+                    <div className="amount">
+                        <Skeleton />
+                    </div>
+                </div>
+                <div className="price">
+                    <p className="price">
+                        <Skeleton count={3} />
+                    </p>
+                    <div className="delete">
+                        <Skeleton height={'100%'} />
+                    </div>
+                </div>
+            </div>
+        ));
 }

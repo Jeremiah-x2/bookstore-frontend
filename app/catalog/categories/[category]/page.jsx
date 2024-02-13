@@ -2,6 +2,7 @@
 import '@/app/components/styles/categories.scss';
 import Book from '@/app/components/Book';
 import React, { useEffect, useState } from 'react';
+import { Box } from '../../page';
 
 async function getBooksByCategory() {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/books`, {
@@ -30,13 +31,19 @@ export default function Category({ params }) {
 
     return (
         <div className="books--categories">
-            {data &&
+            {data ? (
                 data.map((item, index) => (
                     <Book
                         book={item}
                         key={index}
                     />
-                ))}
+                ))
+            ) : (
+                <Box
+                    box={15}
+                    gap={'2rem'}
+                />
+            )}
         </div>
     );
 }

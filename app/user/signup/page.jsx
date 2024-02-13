@@ -44,18 +44,18 @@ export default function Signup() {
                 }
             );
             const response = await request.json();
-            console.log(response);
             if (request.status === 409) {
                 toast('Email already exists');
             }
             if (request.status === 201) {
                 toast('Account Created successfully');
-                router.prefetch('/');
+                window.localStorage.setItem('_id', response.user._id);
+                router.refresh();
                 router.push('/');
+                router.refresh();
             }
             return;
         } else if (formData.password !== formData.confirmPassword) {
-            console.log('passwords do not match', formData);
             document
                 .getElementById('password')
                 .parentNode.classList.add('match--error');
