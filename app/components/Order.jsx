@@ -48,7 +48,7 @@ export default function OrderItem({ item, setFetchTrigger }) {
                     <div className="update--cart">
                         {orderQuantity === 1 ? (
                             <button
-                                className="increase"
+                                className="decrease"
                                 onClick={() => {
                                     deleteOrder(item.book._id);
                                     setOrderQuantity(0);
@@ -58,7 +58,7 @@ export default function OrderItem({ item, setFetchTrigger }) {
                             </button>
                         ) : (
                             <button
-                                className="increase"
+                                className="decrease"
                                 onClick={() => {
                                     updateQuantity(
                                         item.book._id,

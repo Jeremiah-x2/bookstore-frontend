@@ -46,7 +46,49 @@ header {
         width: 100%;
         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
     }
+
+    .account--auth {
+        display: flex;
+        gap: 1rem;
+    }
+    .acct {
+        text-decoration: underline;
+        text-underline-offset: 10px;
+        margin-right: 8px;
+    }
+    button {
+        padding: 0.5rem 1rem;
+        border: 2px solid #3d3c3c;
+        color: #3d3c3c;
+        font-weight: bold;
+        letter-spacing: 1.5px;
+        animation-name: bounce;
+        animation-duration: 1.5s;
+        animation-iteration-count: infinite;
+        animation-direction: alternate;
+        background-color: #fdbf0f;
+        transition: all 0.5s;
+        &:hover {
+            background-color: #f9784b;
+        }
+        &.login {
+            border-radius: 8px;
+        }
+        &.sign {
+            border-radius: 20px;
+        }
+        @keyframes bounce {
+            from {
+                transform: translateY(0);
+                box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.3);
+            }
+            to {
+                transform: translateY(10%);
+            }
+        }
+    }
 }
+
 
 button {
     cursor: pointer;

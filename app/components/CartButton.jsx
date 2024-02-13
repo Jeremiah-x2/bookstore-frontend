@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import UpdateCartButton from './UpdateCartButton';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function CartButton({ book }) {
     const [orderQuantity, setOrderQuantity] = useState(
@@ -26,6 +28,8 @@ export default function CartButton({ book }) {
         console.log(response);
         if (request.status === 201) {
             setOrderQuantity(1);
+        }
+        if (request.status === 500) {
         }
 
         console.log(request.status);

@@ -5,8 +5,10 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useRouter } from 'next/navigation';
 
 export default function Login() {
+    const router = useRouter();
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -40,9 +42,12 @@ export default function Login() {
             toast('User does not exist');
         }
         if (request.status === 201) {
-            console.log(response.token);
-            window.localStorage.setItem('userToken', response.token);
+            window.localStorage.setItem('_id', response.user._id);
             toast('Logged in successfully');
+            router.refresh();
+            router.push('/');
+            router.refresh();
+            // router.push('/');
         }
     }
 

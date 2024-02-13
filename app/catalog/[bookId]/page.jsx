@@ -11,10 +11,13 @@ const unica = Unica_One({ subsets: ['latin'], weight: '400' });
 const syne = Syne({ subsets: ['latin'], weight: ['400', '500', '600'] });
 
 async function getBookById(id) {
-    const response = await fetch(`http://localhost:5000/books/${id}`, {
-        credentials: 'include',
-        next: { revalidate: 0 },
-    });
+    const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/books/${id}`,
+        {
+            credentials: 'include',
+            next: { revalidate: 0 },
+        }
+    );
 
     const result = await response.json();
 

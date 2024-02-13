@@ -36,6 +36,7 @@ export default function Signup() {
                 `${process.env.NEXT_PUBLIC_API_URL}/users`,
                 {
                     method: 'POST',
+                    credentials: 'include',
                     headers: {
                         'Content-Type': 'application/json',
                     },
@@ -43,8 +44,14 @@ export default function Signup() {
                 }
             );
             const response = await request.json();
+            console.log(response);
             if (request.status === 409) {
                 toast('Email already exists');
+            }
+            if (request.status === 201) {
+                toast('Account Created successfully');
+                router.prefetch('/');
+                router.push('/');
             }
             return;
         } else if (formData.password !== formData.confirmPassword) {

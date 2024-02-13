@@ -14,13 +14,17 @@ async function getUser(id) {
 
 export default function Account({ params }) {
     const [userData, setUserData] = useState(null);
+    const [isUser, setIsUser] = useState(false);
 
     useEffect(() => {
         async function userDataGet() {
             const response = await getUser(params.userId);
             setUserData(response);
         }
-        userDataGet();
+        if (localStorage.getItem('_id')) {
+            userDataGet();
+            setIsUser(true);
+        }
     }, []);
     return (
         <>
@@ -30,6 +34,7 @@ export default function Account({ params }) {
                     <p>Email: {userData.email}</p>
                 </div>
             )}
+            {!isUser && <div>Login to see your account details</div>}
         </>
     );
 }

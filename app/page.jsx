@@ -10,6 +10,8 @@ import { Splide, SplideSlide } from '@splidejs/react-splide';
 import { useContext, useEffect, useState } from 'react';
 import TrendingBook from './components/TrendingBook';
 import { pageTriggerContext } from './layout';
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
 
 const syne = Syne({ subsets: ['latin'], weight: ['500', '400', '600'] });
 const unica = Unica_One({ subsets: ['latin'], weight: '400' });
@@ -31,6 +33,21 @@ export default function Home() {
     const [search, setSearch] = useState('');
     const [page, setPage] = useState(false);
 
+    useGSAP(() => {
+        gsap.from('.hero .left .what .span', {
+            y: -100,
+            height: 0,
+            duration: 2,
+            overflow: 'hidden',
+            position: 'relative',
+            // stagger: 1,
+        });
+        gsap.from('.hero .right img', {
+            scale: 0.6,
+            duration: 1.5,
+        });
+    });
+
     useEffect(() => {
         async function parseData() {
             try {
@@ -40,14 +57,16 @@ export default function Home() {
                 console.error('Error fetching books:', error);
             }
         }
-
         parseData();
     }, [page]);
     return (
         <main>
             <section className={`hero ${syne.className}`}>
                 <div className="left">
-                    <p className={`what`}>What book you looking for?</p>
+                    <div className={`what`}>
+                        <p className="span">What book you</p>{' '}
+                        <p className="span">looking for?</p>
+                    </div>
                     <p className="explore">
                         Explore our catalog and find your next read.
                     </p>
@@ -90,7 +109,7 @@ export default function Home() {
                         )}
                     </div>
                     <button className="btn--explore">
-                        Explore{' '}
+                        <Link href={'/catalog'}>Explore </Link>
                         <Image
                             src={'/images/Binoculars.svg'}
                             width={24}
@@ -160,8 +179,16 @@ export default function Home() {
                 </div>
             </section>
 
-            <section className={`romance ${unica.className}`}>
-                <h4>Beauty</h4>
+            <section className={`beauty  ${unica.className}`}>
+                <h4>
+                    <Image
+                        src={'/images/PATH.svg'}
+                        width={26}
+                        height={22}
+                        alt="path"
+                    />
+                    Beauty
+                </h4>
                 <Splide
                     options={{
                         pagination: false,
@@ -175,7 +202,6 @@ export default function Home() {
                     {data &&
                         data.result
                             .filter((item) => item.category === 'beauty')
-                            .slice(0, 10)
                             .map((item, index) => (
                                 <SplideSlide key={index}>
                                     <Book book={item} />
@@ -184,8 +210,16 @@ export default function Home() {
                 </Splide>
             </section>
 
-            <section className={`adventure ${unica.className}`}>
-                <h4>Adventure</h4>
+            <section className={`sports ${unica.className}`}>
+                <h4>
+                    <Image
+                        src={'/images/PATH.svg'}
+                        width={26}
+                        height={22}
+                        alt="path"
+                    />
+                    Sports
+                </h4>
                 <Splide
                     options={{
                         pagination: false,
@@ -197,14 +231,15 @@ export default function Home() {
                         },
                     }}>
                     {data &&
-                        data.result.slice(0, 10).map((item, index) => (
-                            <SplideSlide key={index}>
-                                <Book book={item} />
-                            </SplideSlide>
-                        ))}
+                        data.result
+                            .filter((item) => item.category === 'sports')
+                            .map((item, index) => (
+                                <SplideSlide key={index}>
+                                    <Book book={item} />
+                                </SplideSlide>
+                            ))}
                 </Splide>
             </section>
-            {/* {data && JSON.stringify(data.result.slice(0, 2))} */}
         </main>
     );
 }

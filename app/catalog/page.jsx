@@ -47,12 +47,12 @@ export default function Catalog() {
             setData(books);
         }
         setBooksData();
-        // setLoading(false);
+        setLoading(false);
     }, []);
 
     return (
         <section className="all--books">
-            {/* <div className={`loading-cat ${loading ? 'show' : ''}`}></div> */}
+            <div className={`loading-cat ${!loading ? 'hide' : ''}`}></div>
             <div className="search--books">
                 <div className="search--input">
                     <input

@@ -47,12 +47,6 @@ export default function RootLayout({ children }) {
                 />
                 <pageTriggerContext.Provider value={pageTrigger}>
                     <pageTriggerDispatch.Provider value={dispatch}>
-                        <Cart
-                            showCart={showCart}
-                            setShowCart={setShowCart}
-                            fetchTrigger={fetchTrigger}
-                            setFetchTrigger={setFetchTrigger}
-                        />
                         {children}
                     </pageTriggerDispatch.Provider>
                 </pageTriggerContext.Provider>

@@ -23,14 +23,17 @@ export function Categories({
                     onClick={closeSelection}
                 />
             </p>
-            <div className="select--lists">
+            <div className="select--lists hide">
                 <ul>
                     {options
                         .filter((item) => item !== currentValue)
                         .map((item, index) => (
                             <li
                                 key={index}
-                                onClick={() => setcategoriesCurrentValue(item)}>
+                                onClick={() => {
+                                    setcategoriesCurrentValue(item);
+                                    closeSelection();
+                                }}>
                                 {item}
                             </li>
                         ))}
